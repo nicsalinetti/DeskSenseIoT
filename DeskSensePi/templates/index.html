@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Occupancy Monitor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: white; text-align: center; }
+        .container { margin-top: 50px; }
+        .val { font-size: 8em; font-weight: bold; color: #00ff88; margin: 10px 0; }
+        .status { font-size: 2.5em; background: #333; display: inline-block; padding: 15px 40px; border-radius: 50px; margin-bottom: 30px;}
+        .controls { margin-top: 20px; border-top: 1px solid #444; padding-top: 30px; }
+        button { padding: 15px 30px; font-size: 1.2em; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        .info { color: #888; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Table Occupancy</h1>
+        <div id="count" class="val">0</div>
+        <div id="result" class="status">VACANT</div>
+
+        <div class="controls">
+            <button onclick="changeTimeout(1)">Set 1 Min (Fast Test)</button>
+            <button onclick="changeTimeout(5)">Set 5 Min</button>
+            <button onclick="changeTimeout(10)">Set 10 Min (Normal)</button>
+            <div class="info">Current Vacancy Buffer: <span id="timeDisplay">10</span> mins</div>
+            <div class="info">Device Status: <span id="deviceStatus">Waiting for device</span></div>
+        </div>
+    </div>
+
+    <script>
+        var socket = io();
+
+        function changeTimeout(mins) {
+            socket.emit('toggle_timeout', {timeout: mins});
+            document.getElementById('timeDisplay').innerHTML = mins;
+        }
+
+        socket.on('update_data', function(data) {
+            document.getElementById('count').innerHTML = data.count;
+            document.getElementById('result').innerHTML = data.result;
+            if (data.current_timeout) {
+                document.getElementById('timeDisplay').innerHTML = data.current_timeout;
+            }
+            if (data.status) {
+                document.getElementById('deviceStatus').innerHTML = data.status;
+            }
+            
+            var statusBox = document.getElementById('result');
+            var countDisplay = document.getElementById('count');
+            
+            if(data.count === "2") {
+                statusBox.style.color = "#ff4444";
+                countDisplay.style.color = "#ff4444";
+            } else if (data.count === "1") {
+                statusBox.style.color = "#00ff88";
+                countDisplay.style.color = "#00ff88";
+            } else {
+                statusBox.style.color = "#aaaaaa";
+                countDisplay.style.color = "#aaaaaa";
+            }
+        });
+    </script>
+</body>
+</html>

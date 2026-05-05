@@ -1,0 +1,4 @@
+arduino_secrets.h
+.env
+__pycache__/
+*.pyc

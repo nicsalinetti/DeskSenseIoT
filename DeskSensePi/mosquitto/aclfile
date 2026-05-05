@@ -1,0 +1,12 @@
+# DeskSense MQTT topic authorization.
+# ESP8266 can publish telemetry/status and receive configuration commands.
+user desksense_esp
+topic write occupancy/count
+topic write occupancy/status
+topic read occupancy/set_timeout
+
+# Flask dashboard can read telemetry/status and publish validated commands.
+user desksense_app
+topic read occupancy/count
+topic read occupancy/status
+topic write occupancy/set_timeout
