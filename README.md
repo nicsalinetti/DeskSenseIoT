@@ -84,13 +84,7 @@ The dashboard now requires HTTP Basic authentication. Configure `DASHBOARD_USERN
 ## Security Measures
 *   **IEEE 802.1X / WPA2 Enterprise:** ESP8266 WiFi setup supports enterprise authentication for managed networks.
 *   **MQTT Authentication:** Mosquitto examples disable anonymous access and require per-client credentials.
-*   **Topic Authorization:** The sample ACL lets the ESP publish telemetry and read commands while the Flask app can publish timeout commands.
-*   **MQTT TLS Ready:** Mosquitto and Flask include optional TLS settings. Enable TLS once certificates are installed on the Pi.
-*   **Command Validation:** ESP8266 firmware accepts only approved vacancy timeout values.
-*   **Dashboard Authentication:** Flask dashboard requires a username and password.
 *   **Config Isolation:** Secrets are loaded from `arduino_secrets.h` and `.env`, both excluded from version control.
-*   **Audit Logging:** Flask logs count/status updates and timeout changes.
-*   **Architecture Documentation:** See `docs/SECURITY_ARCHITECTURE.md` for trust boundaries and operational controls.
 
 ---
 
